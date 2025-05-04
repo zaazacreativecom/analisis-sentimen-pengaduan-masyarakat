@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Sentimen Pengaduan Masyarakat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <i class="fas fa-comments-alt mr-2"></i>
+                        Analisis Sentimen Pengaduan
+                    </h1>
+                    <nav>
+                        <a href="/history" class="text-gray-600 hover:text-gray-900">
+                            <i class="fas fa-history mr-1"></i>
+                            Riwayat
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 py-6 sm:px-0">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Form Section -->
+                    <div class="lg:w-2/3">
+                        <div class="bg-white shadow rounded-lg p-6">
+                            <h2 class="text-xl font-semibold mb-4">Submit Pengaduan</h2>
+                            <form th:action="@{/analyze}" th:object="${complaint}" method="post" class="space-y-4">
+                                <div>
+                                    <label for="text" class="block text-sm font-medium text-gray-700">
+                                        Teks Pengaduan
+                                    </label>
+                                    <div class="mt-1">
+                                        <textarea
+                                            id="text"
+                                            name="text"
+                                            th:field="*{text}"
+                                            rows="4"
+                                            class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                            placeholder="Tulis pengaduan Anda di sini..."
+                                        ></textarea>
+                                        <p th:if="${#fields.hasErrors('text')}" class="mt-1 text-sm text-red-600" th:errors="*{text}">
+                                            Error message
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        <i class="fas fa-search mr-2"></i>
+                                        Analisis Sentimen
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Recent Complaints Section -->
+                    <div class="lg:w-1/3">
+                        <div class="bg-white shadow rounded-lg p-6">
+                            <h2 class="text-xl font-semibold mb-4">Pengaduan Terbaru</h2>
+                            <div class="space-y-4">
+                                <div th:each="complaint : ${complaints}" class="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                                    <p class="text-sm text-gray-600" th:text="${#temporals.format(complaint.timestamp, 'dd MMM yyyy HH:mm')}">
+                                        Date
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-900" th:text="${#strings.abbreviate(complaint.text, 100)}">
+                                        Complaint text
+                                    </p>
+                                    <div class="mt-2">
+                                        <span th:class="${
+                                            complaint.sentiment == 'positive' ? 'bg-green-100 text-green-800' :
+                                            complaint.sentiment == 'negative' ? 'bg-red-100 text-red-800' :
+                                            'bg-gray-100 text-gray-800'
+                                        } + ' inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium'"
+                                        th:text="${complaint.sentiment}">
+                                            Sentiment
+                                        </span>
+                                        <span class="ml-2 text-xs text-gray-500" 
+                                              th:text="${#numbers.formatDecimal(complaint.confidence * 100, 1, 0) + '%'}">
+                                            Confidence
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
