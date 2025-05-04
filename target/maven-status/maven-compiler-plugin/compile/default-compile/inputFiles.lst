@@ -1,0 +1,7 @@
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/service/SentimentAnalysisService.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/repository/ComplaintRepository.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/ComplaintAnalysisApplication.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/service/ComplaintService.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/model/Complaint.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/model/SentimentResult.java
+/project/sandbox/user-workspace/src/main/java/com/example/complaintanalysis/controller/ComplaintController.java
