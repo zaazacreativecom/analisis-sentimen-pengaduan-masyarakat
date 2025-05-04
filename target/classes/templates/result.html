@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisis Sentimen - Pengaduan Masyarakat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        <i class="fas fa-chart-pie mr-2"></i>
+                        Hasil Analisis Sentimen
+                    </h1>
+                    <nav>
+                        <a href="/" class="text-gray-600 hover:text-gray-900">
+                            <i class="fas fa-home mr-1"></i>
+                            Kembali
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            <div class="px-4 py-6 sm:px-0">
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <!-- Result Card -->
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h2 class="text-lg font-medium text-gray-900">Pengaduan</h2>
+                            <p class="mt-2 text-gray-600" th:text="${complaint.text}">Complaint text</p>
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-6">
+                            <h2 class="text-lg font-medium text-gray-900">Hasil Analisis</h2>
+                            
+                            <!-- Sentiment Result -->
+                            <div class="mt-4 flex items-center">
+                                <span class="text-sm font-medium text-gray-500">Sentimen:</span>
+                                <span th:class="${sentimentClass} + ' ml-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium'"
+                                      th:text="${complaint.sentiment}">
+                                    Sentiment
+                                </span>
+                            </div>
+
+                            <!-- Confidence Score -->
+                            <div class="mt-4">
+                                <span class="text-sm font-medium text-gray-500">Tingkat Kepercayaan:</span>
+                                <div class="mt-2 relative pt-1">
+                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-gray-200">
+                                        <div th:style="'width: ' + ${complaint.confidence * 100} + '%'"
+                                             th:class="${
+                                                 complaint.sentiment == 'positive' ? 'bg-green-500' :
+                                                 complaint.sentiment == 'negative' ? 'bg-red-500' :
+                                                 'bg-gray-500'
+                                             } + ' shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center'">
+                                        </div>
+                                    </div>
+                                    <span class="mt-1 text-sm text-gray-600" 
+                                          th:text="${#numbers.formatDecimal(complaint.confidence * 100, 1, 0) + '%'}">
+                                        Confidence
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Timestamp -->
+                            <div class="mt-6 text-sm text-gray-500">
+                                <i class="far fa-clock mr-1"></i>
+                                Dianalisis pada: 
+                                <span th:text="${#temporals.format(complaint.timestamp, 'dd MMMM yyyy HH:mm')}">
+                                    Timestamp
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
+                        <a href="/"
+                           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-plus mr-2"></i>
+                            Analisis Baru
+                        </a>
+                        <a href="/history"
+                           class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-history mr-2"></i>
+                            Lihat Riwayat
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
